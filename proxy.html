@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+document.domain = 'aa.com';
+// 监听消息
+var hash = '';
+setInterval(function(){
+	if(hash == location.hash){
+		return;
+	}
+	hash = location.hash;
+	// 得到消息对象
+	// 如果是 firefox则不用转码,其它则要
+	if(/firefox/.test(navigator.userAgent.toLowerCase())){
+		var msg = hash.substr(14);
+	}else{
+		var msg = decodeURIComponent(hash.substr(14));
+	};
+	//console.log(msg);
+	var msgObj = eval('('+msg+')');
+	if (typeof(console) == 'object') {
+		console.log(msgObj);
+	}
+	top.window.execCallback(msgObj.msgtype,msgObj);
+},100);
+</script>
+</head>
+<body>
+</body>
+</html>
